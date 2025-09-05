@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>역사 - 헬로월드 동아리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a16;
+            --darker-bg: #050510;
+            --panel-bg: rgba(16, 16, 40, 0.8);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background: var(--darker-bg);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(189, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 20%);
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            animation: header-glow 3s infinite;
+        }
+        
+        @keyframes header-glow {
+            0% { box-shadow: 0 0 10px var(--neon-blue); }
+            50% { box-shadow: 0 0 20px var(--neon-pink); }
+            100% { box-shadow: 0 0 10px var(--neon-blue); }
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(189, 0, 255, 0.4);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--neon-blue);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px var(--neon-blue);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .history-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .history-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .highlight {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+            font-weight: bold;
+        }
+        
+        .year-mark {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+            font-weight: bold;
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glowing-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="glowing-dots" id="glowing-dots"></div>
+    
+    <div class="container">
+        <a href="main.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 메인으로 돌아가기
+        </a>
+        
+        <h1><i class="fas fa-history"></i> 헬로월드 동아리 역사</h1>
+        
+        <div class="history-content">
+            <p>
+                <span class="year-mark">2020년</span> <span class="highlight">오동철 선생님</span>에 의해 창단된 소프트웨어 동아리이다. 
+                당시 오동철 선생님은 학생들이 교과 과정 속 이론적 정보 교육에만 머무르지 않고, 
+                실제 소프트웨어를 다루며 개발 경험을 쌓을 수 있는 장을 마련하고자 했다.
+            </p>
+            
+            <p>
+                이에 따라 학교 내 컴퓨터실을 중심으로 의지가 있는 학생들을 모아 헬로월드를 설립하였으며, 
+                프로그래밍 기초 학습과 프로젝트 활동을 중심으로 운영이 시작되었다.
+            </p>
+            
+            <p>
+                <span class="year-mark">2023년</span>에는 <span class="highlight">이유준 선생님</span>께서 합류하면서 동아리는 새로운 전환점을 맞았다. 
+                지도 체계가 강화되고 활동 영역이 확대되면서 헬로월드는 빠른 성장을 이루었고, 
+                학생들의 참여도와 성취가 눈에 띄게 증가하였다.
+            </p>
+            
+            <p>
+                이후 헬로월드는 학교 내에서만 머무르지 않고 지역과 학교 간 네트워크를 넓히며, 
+                초·고 연합캠프와 중·고 연합캠프를 주관하는 등 중심적인 역할을 맡게 되었다. 
+                더 나아가 해커톤 대회 역시 헬로월드의 기획과 운영 아래 열리게 되면서, 
+                소프트웨어 분야에서 영향력 있는 동아리로 자리 잡았다.
+            </p>
+            
+            <p>
+                이러한 흐름 속에서 헬로월드는 <span class="year-mark">2025년</span>에 전성기를 맞이하였다. 
+                수많은 학생들이 동아리의 문을 두드리며 소프트웨어 교육과 협업 경험을 얻기 위해 참여하였고, 
+                다양한 프로젝트와 대회를 통해 눈에 띄는 성과를 거두었다.
+            </p>
+            
+            <p>
+                헬로월드의 목적은 단순히 프로그래밍 능력을 기르는 것에 그치지 않고, 
+                창의적이고 혁신적인 문제 해결력을 키워 미래 사회의 변화를 주도할 수 있는 인재를 양성하는 것이다. 
+                또한, 장기적으로 학교를 대표하는 ICT 동아리로서, 
+                나아가 지역과 사회에 기여할 수 있는 소프트웨어 공동체로 성장하는 것을 비전으로 삼고 있다.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 빛나는 점 생성 (배경 효과)
+        function createGlowingDots() {
+            const container = document.getElementById('glowing-dots');
+            const colors = ['#00f3ff', '#ff00ff', '#bd00ff', '#39ff14'];
+            
+            for (let i = 0; i < 30; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                
+                dot.style.left = Math.random() * 100 + 'vw';
+                dot.style.top = Math.random() * 100 + 'vh';
+                
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                dot.style.background = color;
+                dot.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                
+                dot.style.animationDelay = Math.random() * 15 + 's';
+                
+                container.appendChild(dot);
+            }
+        }
+        
+        createGlowingDots();
+    </script>
+    <div class="upload-section">
+    <h3><i class="fas fa-history"></i> 역사 자료 업로드</h3>
+    <!-- 업로드 UI -->
+</div>
+</body>
+</html>

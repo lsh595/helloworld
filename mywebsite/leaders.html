@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>역대 부장단 - 헬로월드 동아리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a16;
+            --darker-bg: #050510;
+            --panel-bg: rgba(16, 16, 40, 0.8);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background: var(--darker-bg);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(189, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 20%);
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(189, 0, 255, 0.4);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--neon-blue);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px var(--neon-blue);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .leaders-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .leader-tab {
+            padding: 15px 25px;
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-purple);
+            border-radius: 5px;
+            color: var(--neon-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px var(--neon-blue);
+            box-shadow: 0 0 10px rgba(189, 0, 255, 0.3);
+        }
+        
+        .leader-tab:hover,
+        .leader-tab.active {
+            background: rgba(189, 0, 255, 0.2);
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+            transform: translateY(-3px);
+        }
+        
+        .leader-content {
+            display: none;
+            background: var(--panel-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .leader-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .leader-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .leader-name {
+            color: var(--neon-green);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .leader-info {
+            color: var(--neon-blue);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .achievements {
+            margin-bottom: 30px;
+        }
+        
+        .achievements h3 {
+            color: var(--neon-pink);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--neon-pink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .achievement-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .achievement-list li {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(0, 243, 255, 0.1);
+            border-left: 4px solid var(--neon-blue);
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .achievement-list li:hover {
+            transform: translateX(5px);
+            background: rgba(0, 243, 255, 0.2);
+        }
+        
+        .achievement-list li i {
+            color: var(--neon-pink);
+            margin-right: 10px;
+        }
+        
+        .message {
+            background: rgba(189, 0, 255, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid var(--neon-purple);
+            margin-top: 30px;
+            line-height: 1.8;
+        }
+        
+        .message h3 {
+            color: var(--neon-purple);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--neon-purple);
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glowing-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="glowing-dots" id="glowing-dots"></div>
+    
+    <div class="container">
+        <a href="main.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 메인으로 돌아가기
+        </a>
+        
+        <h1><i class="fas fa-users"></i> 역대 부장단</h1>
+        
+        <div class="leaders-tabs">
+            <div class="leader-tab active" data-leader="kwak">곽범준 (4기)</div>
+            <div class="leader-tab" data-leader="moon">문승찬 (4기)</div>
+        </div>
+        
+        <!-- 곽범준 부장 -->
+        <div class="leader-content active" id="leader-kwak">
+            <div class="leader-header">
+                <h2 class="leader-name">곽범준</h2>
+                <p class="leader-info">4기 헬로월드 동아리 부장</p>
+                <p class="leader-info">나이: 올해로 20세</p>
+            </div>
+            
+            <div class="achievements">
+                <h3><i class="fas fa-trophy"></i> 동아리 업적</h3>
+                <ul class="achievement-list">
+                    <li><i class="fas fa-code"></i> 4기 헬로월드 동아리 부장</li>
+                    <li><i class="fas fa-project-diagram"></i> 티쳐볼 만들기 진행</li>
+                    <li><i class="fas fa-microchip"></i> 마이크로소프트 임파워먼트 프로젝트 진행</li>
+                    <li><i class="fas fa-cogs"></i> 프로젝트의 아두이노 소스코드와 회로도 진행</li>
+                    <li><i class="fas fa-image"></i> 이미지 크롤링 진행</li>
+                    <li><i class="fas fa-campground"></i> 초·고 연합캠프 총괄</li>
+                    <li><i class="fas fa-gamepad"></i> 테트리스 게임 진행</li>
+                </ul>
+            </div>
+            
+            <div class="message">
+                <h3><i class="fas fa-envelope"></i> 후배들에게 보내는 메시지</h3>
+                <p>안녕하세요. 저는 헬로월드 4기 부장을 맡았던 곽범준입니다. 어느덧 제가 동아리를 이끌던 시간이 지나고, 헬로월드가 2025년 전성기를 맞이했다는 소식을 들으니 감회가 새롭습니다.</p>
+                <p>솔직히 고백하자면, 제가 부장을 맡았던 시절은 아쉬움이 많이 남습니다. 여러 프로젝트를 추진하면서도 운영과 관리에 소홀했던 탓에, 동아리의 흐름이 조금 흔들리기도 했습니다. 초·고 연합캠프를 총괄하며 책임감을 배웠지만, 동시에 제가 더 잘할 수 있었던 부분들을 놓친 것도 사실입니다.</p>
+                <p>하지만 여러분은 저보다 훨씬 더 큰 가능성과 열정을 가지고 있습니다. 부디 헬로월드라는 이름이 단순한 동아리를 넘어, 소프트웨어와 창의력으로 세상을 변화시키는 상징이 되기를 바랍니다.</p>
+                <p>언젠가 다시 동아리를 찾아뵐 날이 오면, 부끄럽지 않은 선배로서 여러분의 눈부신 성장을 지켜보고 싶습니다.</p>
+                <p>늘 응원하는<br>헬로월드 4기 부장 곽범준 드림</p>
+            </div>
+        </div>
+        
+        <!-- 문승찬 부장 -->
+        <div class="leader-content" id="leader-moon">
+            <div class="leader-header">
+                <h2 class="leader-name">문승찬</h2>
+                <p class="leader-info">4기 헬로월드 동아리 부장</p>
+                <p class="leader-info">나이: 올해로 19세</p>
+            </div>
+            
+            <div class="achievements">
+                <h3><i class="fas fa-trophy"></i> 동아리 업적</h3>
+                <ul class="achievement-list">
+                    <li><i class="fas fa-code"></i> 4기 헬로월드 동아리 부장</li>
+                    <li><i class="fas fa-store"></i> 2024 헬로월드 부스 운영 총괄</li>
+                    <li><i class="fas fa-globe"></i> 동아리 웹사이트 제작 진행</li>
+                    <li><i class="fas fa-robot"></i> 인공지능 프로젝트 진행</li>
+                    <li><i class="fas fa-car"></i> 아두이노 자동차 프로젝트 진행</li>
+                </ul>
+            </div>
+            
+            <div class="message">
+                <h3><i class="fas fa-envelope"></i> 후배들에게 보내는 메시지</h3>
+                <p>안녕하세요. 저는 4기 헬로월드 부장을 맡았던 문승찬입니다. 어느덧 시간이 흘러 제가 동아리를 이끌던 순간들이 추억이 되었고, 이제는 여러분이 헬로월드의 새로운 역사를 써 내려가고 있다는 소식을 듣게 되었네요.</p>
+                <p>저는 헬로월드를 위해 누구보다 열정을 쏟아붓고자 했습니다. 2024년 부스 운영을 총괄하며 밤늦게까지, 때로는 새벽 4시까지도 헬로월드 이름을 알리기 위해 준비했던 기억이 아직도 생생합니다.</p>
+                <p>하지만 동시에, 저에게는 한계도 분명히 있었습니다. 공부와 활동을 병행하며 스스로 감당하기 힘든 순간들이 있었고, 그 과정에서 동아리를 위해 더 하고 싶었던 것들을 다 이루지 못했다는 아쉬움이 남습니다.</p>
+                <p>후배 여러분, 헬로월드는 단순히 소프트웨어를 배우는 동아리가 아닙니다. 서로가 함께 성장하고, 한계에 부딪히더라도 이를 뛰어넘으며 새로운 길을 열어가는 공동체입니다.</p>
+                <p>항상 응원하며,<br>헬로월드 4기 부장 문승찬 드림</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 탭 전환 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.leader-tab');
+            const contents = document.querySelectorAll('.leader-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const leaderId = this.getAttribute('data-leader');
+                    
+                    // 모든 탭 비활성화
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+                    
+                    // 현재 탭 활성화
+                    this.classList.add('active');
+                    document.getElementById(`leader-${leaderId}`).classList.add('active');
+                });
+            });
+            
+            // 빛나는 점 생성 (배경 효과)
+            function createGlowingDots() {
+                const container = document.getElementById('glowing-dots');
+                const colors = ['#00f3ff', '#ff00ff', '#bd00ff', '#39ff14'];
+                
+                for (let i = 0; i < 30; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    
+                    dot.style.left = Math.random() * 100 + 'vw';
+                    dot.style.top = Math.random() * 100 + 'vh';
+                    
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    dot.style.background = color;
+                    dot.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                    
+                    dot.style.animationDelay = Math.random() * 15 + 's';
+                    
+                    container.appendChild(dot);
+                }
+            }
+            
+            createGlowingDots();
+        });
+    </script>
+    <div class="upload-section">
+    <h3><i class="fas fa-users"></i> 리더 자료 업로드</h3>
+    <!-- 업로드 UI -->
+</div>
+</body>
+</html>

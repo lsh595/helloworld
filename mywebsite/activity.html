@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동아리 활동 - 헬로월드 동아리</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a16;
+            --darker-bg: #050510;
+            --panel-bg: rgba(16, 16, 40, 0.8);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background: var(--darker-bg);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(189, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 20%);
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(189, 0, 255, 0.4);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--neon-blue);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px var(--neon-blue);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .generation-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .generation-tab {
+            padding: 15px 25px;
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-purple);
+            border-radius: 5px;
+            color: var(--neon-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px var(--neon-blue);
+            box-shadow: 0 0 10px rgba(189, 0, 255, 0.3);
+        }
+        
+        .generation-tab:hover,
+        .generation-tab.active {
+            background: rgba(189, 0, 255, 0.2);
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+            transform: translateY(-3px);
+        }
+        
+        .generation-content {
+            display: none;
+            background: var(--panel-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .generation-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .generation-title {
+            color: var(--neon-green);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .activity-list li {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(0, 243, 255, 0.1);
+            border-left: 4px solid var(--neon-blue);
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .activity-list li:hover {
+            transform: translateX(5px);
+            background: rgba(0, 243, 255, 0.2);
+        }
+        
+        .activity-list li i {
+            color: var(--neon-pink);
+            margin-right: 10px;
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glowing-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="glowing-dots" id="glowing-dots"></div>
+    
+    <div class="container">
+        <a href="main.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 메인으로 돌아가기
+        </a>
+        
+        <h1><i class="fas fa-running"></i> 동아리 활동</h1>
+        
+        <div class="generation-tabs">
+            <div class="generation-tab active" data-generation="1">1기</div>
+            <div class="generation-tab" data-generation="2">2기</div>
+            <div class="generation-tab" data-generation="3">3기</div>
+            <div class="generation-tab" data-generation="4">4기</div>
+            <div class="generation-tab" data-generation="5">5기</div>
+            <div class="generation-tab" data-generation="6">6기</div>
+        </div>
+        
+        <!-- 1기 활동 내용 -->
+        <div class="generation-content active" id="generation-1">
+            <h2 class="generation-title"><i class="fas fa-1"></i> 기 활동 (2020)</h2>
+            <ul class="activity-list">
+                <li><i class="fas fa-code"></i> 프로그래밍 기초 교육 (Python, HTML/CSS)</li>
+                <li><i class="fas fa-users"></i> 첫 정기 모임 시작 및 동아리 규칙 수립</li>
+                <li><i class="fas fa-project-diagram"></i> 간단한 웹사이트 제작 프로젝트</li>
+                <li><i class="fas fa-graduation-cap"></i> 오동철 선생님 지도 하에 기초 코딩 교육</li>
+                <li><i class="fas fa-laptop"></i> 학교 컴퓨터실을 중심으로 활동 시작</li>
+            </ul>
+        </div>
+        
+        <!-- 2기 활동 내용 -->
+        <div class="generation-content" id="generation-2">
+            <h2 class="generation-title"><i class="fas fa-2"></i> 기 활동 (2021)</h2>
+            <ul class="activity-list">
+                <li><i class="fas fa-mobile-alt"></i> 앱 개발 교육 시작 (Java, Kotlin)</li>
+                <li><i class="fas fa-gamepad"></i> 첫 게임 개발 프로젝트 진행</li>
+                <li><i class="fas fa-trophy"></i> 학교 내 소프트웨어 경진대회 참가</li>
+                <li><i class="fas fa-book"></i> 동아리 전용 학습 자료 개발</li>
+                <li><i class="fas fa-user-plus"></i> 회원 수 200% 증가</li>
+            </ul>
+        </div>
+        
+        <!-- 3기 활동 내용 -->
+        <div class="generation-content" id="generation-3">
+            <h2 class="generation-title"><i class="fas fa-3"></i> 기 활동 (2022)</h2>
+            <ul class="activity-list">
+                <li><i class="fas fa-robot"></i> 인공지능/머신러닝 기초 교육 시작</li>
+                <li><i class="fas fa-network-wired"></i> 첫 해커톤 대회 개최</li>
+                <li><i class="fas fa-handshake"></i> 타 학교와의 연합 활동 시작</li>
+                <li><i class="fas fa-chalkboard-teacher"></i> 이유준 선생님 합류 및 지도 체계 강화</li>
+                <li><i class="fas fa-globe"></i> 웹 개발 심화 과정 운영</li>
+            </ul>
+        </div>
+        
+        <!-- 4기 활동 내용 -->
+        <div class="generation-content" id="generation-4">
+            <h2 class="generation-title"><i class="fas fa-4"></i> 기 활동 (2023)</h2>
+            <ul class="activity-list">
+                <li><i class="fas fa-campground"></i> 초·고 연합캠프 주관</li>
+                <li><i class="fas fa-medal"></i> 지역 SW 경진대회 수상</li>
+                <li><i class="fas fa-briefcase"></i> 산업체 연계 프로젝트 시작</li>
+                <li><i class="fas fa-microchip"></i> IoT 및 임베디드 시스템 교육</li>
+                <li><i class="fas fa-users-cog"></i> 멘토-멘티 시스템 도입</li>
+            </ul>
+        </div>
+        
+        <!-- 5기 활동 내용 -->
+        <div class="generation-content" id="generation-5">
+            <h2 class="generation-title"><i class="fas fa-5"></i> 기 활동 (2024)</h2>
+            <ul class="activity-list">
+                <li><i class="fas fa-trophy"></i> 전국 동아리 대회 금상 수상</li>
+                <li><i class="fas fa-graduation-cap"></i> 중·고 연합캠프 성공적 개최</li>
+                <li><i class="fas fa-code-branch"></i> 오픈소스 프로젝트 참여</li>
+                <li><i class="fas fa-chart-line"></i> 동아리 회원 수 최대 기록 경신</li>
+                <li><i class="fas fa-star"></i> 지역 ICT 리더 동아리로 인정</li>
+            </ul>
+        </div>
+        
+        <!-- 6기 활동 내용 -->
+        <div class="generation-content" id="generation-6">
+            <h2 class="generation-title"><i class="fas fa-6"></i> 기 활동 (2025)</h2>
+            <ul class="activity-list">
+                <li><i class="fas fa-rocket"></i> AI/빅데이터 심화 과정 개설</li>
+                <li><i class="fas fa-earth-asia"></i> 국제 SW 교류 프로그램 시작</li>
+                <li><i class="fas fa-hand-holding-heart"></i> 사회공헌 프로젝트 진행</li>
+                <li><i class="fas fa-university"></i> 대학-동아리 연계 프로그램</li>
+                <li><i class="fas fa-crown"></i> 학교 대표 동아리로 자리매김</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 탭 전환 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.generation-tab');
+            const contents = document.querySelectorAll('.generation-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const generationId = this.getAttribute('data-generation');
+                    
+                    // 모든 탭 비활성화
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+                    
+                    // 현재 탭 활성화
+                    this.classList.add('active');
+                    document.getElementById(`generation-${generationId}`).classList.add('active');
+                });
+            });
+            
+            // 빛나는 점 생성 (배경 효과)
+            function createGlowingDots() {
+                const container = document.getElementById('glowing-dots');
+                const colors = ['#00f3ff', '#ff00ff', '#bd00ff', '#39ff14'];
+                
+                for (let i = 0; i < 30; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    
+                    dot.style.left = Math.random() * 100 + 'vw';
+                    dot.style.top = Math.random() * 100 + 'vh';
+                    
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    dot.style.background = color;
+                    dot.style.boxShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+                    
+                    dot.style.animationDelay = Math.random() * 15 + 's';
+                    
+                    container.appendChild(dot);
+                }
+            }
+            
+            createGlowingDots();
+        });
+    </script>
+    <div class="upload-section">
+    <h3><i class="fas fa-running"></i> 활동 자료 업로드</h3>
+    <!-- 업로드 UI -->
+</div>
+</body>
+</html>
