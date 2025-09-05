@@ -6,6 +6,22 @@
     <title>CyberClub | 동아리 역사 관리 시스템</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="glowing-dots" id="glowing-dots"></div>
+    
+    <!--
+<div class="login-container" id="loginContainer">
+    <button class="login-btn" id="loginBtn">
+        <i class="fas fa-terminal"></i> 관리자 로그인
+    </button>
+</div>
+-->
+    
+        <style>
         :root {
             --neon-blue: #00f3ff;
             --neon-pink: #ff00ff;
@@ -35,18 +51,88 @@
             padding-bottom: 40px;
         }
         
-        /* 전광판 스타일 */
-        .marquee-container {
-            background: linear-gradient(90deg, #0a0a16 0%, #1a1a3a 50%, #0a0a16 100%);
-            border: 1px solid var(--neon-blue);
-            border-left: none;
-            border-right: none;
-            padding: 12px 0;
-            margin: 20px 0 40px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        .hello-world-container {
+            text-align: center;
+            margin: 40px 0 30px;
+            padding: 20px;
         }
+        
+        .hello-world {
+            font-size: 4.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-purple), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue),
+                0 0 30px var(--neon-blue),
+                0 0 40px var(--neon-purple),
+                0 0 70px var(--neon-purple);
+            animation: pulsate 2s infinite alternate;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes pulsate {
+            0% {
+                text-shadow: 
+                    0 0 10px var(--neon-blue),
+                    0 0 20px var(--neon-blue),
+                    0 0 30px var(--neon-blue),
+                    0 0 40px var(--neon-purple),
+                    0 0 70px var(--neon-purple);
+            }
+            100% {
+                text-shadow: 
+                    0 0 5px var(--neon-blue),
+                    0 0 10px var(--neon-blue),
+                    0 0 15px var(--neon-blue),
+                    0 0 20px var(--neon-purple),
+                    0 0 35px var(--neon-purple),
+                    0 0 40px var(--neon-purple),
+                    0 0 50px var(--neon-purple),
+                    0 0 75px var(--neon-purple);
+            }
+        }
+        
+      .welcome-text {
+    font-size: 1.5rem;
+    color: var(--neon-green);
+    text-shadow: 0 0 10px var(--neon-green);
+    margin-bottom: 20px;
+    min-height: 2rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid var(--neon-green);
+    animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+
+/* 타이핑 효과 */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* 커서 깜빡임 효과 */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--neon-green); }
+}
+        
+       .marquee-container {
+    width: 800%; 
+    background: linear-gradient(90deg, #0a0a16 0%, #1a1a3a 50%, #0a0a16 100%);
+    border: 1px solid var(--neon-blue);
+    border-left: none;
+    border-right: none;
+    padding: 12px 0;
+    margin: 20px auto 40px; /* 가운데 정렬을 위해 auto 추가 */
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+}
         
         .marquee {
             display: flex;
@@ -238,6 +324,7 @@
         
         input[type="text"],
         input[type="file"],
+        input[type="password"],
         textarea {
             width: 100%;
             padding: 15px;
@@ -251,6 +338,7 @@
         }
         
         input[type="text"]:focus,
+        input[type="password"]:focus,
         textarea:focus {
             border-color: var(--neon-pink);
             box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
@@ -326,16 +414,6 @@
             margin-bottom: 20px;
         }
         
-        .profile-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 25px;
-            border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-        }
-        
         .profile-info h3 {
             margin-bottom: 5px;
             color: var(--neon-pink);
@@ -351,6 +429,7 @@
         .achievement-list {
             list-style-type: none;
             margin-top: 20px;
+            padding: 0;
         }
         
         .achievement-list li {
@@ -428,6 +507,76 @@
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
         
+        .login-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .login-btn {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(189, 0, 255, 0.6);
+        }
+        
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 16, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-form {
+            background: var(--panel-bg);
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .close-login {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .login-form h2 {
+            color: var(--neon-blue);
+            margin-bottom: 25px;
+            text-align: center;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
         @media (max-width: 768px) {
             .profile-header {
                 flex-direction: column;
@@ -459,6 +608,24 @@
             .marquee {
                 animation: marquee-scroll 20s linear infinite;
             }
+            
+            .hello-world {
+                font-size: 3rem;
+            }
+            
+            .welcome-text {
+                font-size: 1.2rem;
+            }
+            
+            .login-container {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .login-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
         }
         
         .badge {
@@ -475,7 +642,6 @@
             color: var(--dark-bg);
         }
         
-        /* 추가적인 네온 효과 */
         .neon-text {
             text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
         }
@@ -521,38 +687,56 @@
             100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
     </style>
-</head>
-<body>
+</head><body>
     <div class="cyber-grid"></div>
     <div class="glowing-dots" id="glowing-dots"></div>
-    
-    <div class="container">
-        <header>
-            <h1>CyberClub History</h1>
-            <p class="header-subtitle">동아리 역사 관리 시스템 | Neo-Seoul 2077</p>
-        </header>
-        
-        <!-- 전광판 -->
-        <div class="marquee-container">
-            <div class="marquee">
-                <div class="marquee-item"><i class="fas fa-star"></i> 2025년 전국 동아리 대회 금상 수상</div>
-                <div class="marquee-item highlight"><i class="fas fa-trophy"></i> 역대 최다 회원 수 기록 갱신</div>
-                <div class="marquee-item"><i class="fas fa-code"></i> 새로운 프로젝트 'CyberCore' 개발 중</div>
-                <div class="marquee-item highlight"><i class="fas fa-users"></i> 2025년 신입회원 모집 중</div>
-                <div class="marquee-item"><i class="fas fa-globe"></i> 글로벌 동아리 연합 프로그램 진행</div>
-                <div class="marquee-item highlight"><i class="fas fa-microchip"></i> AI 개발팀 최신 기술 도입</div>
-                <div class="marquee-item"><i class="fas fa-rocket"></i> 해커톤 대회 참가팀 모집</div>
-                
-                <!-- 반복을 위해 같은 내용 한 번 더 추가 -->
-                <div class="marquee-item"><i class="fas fa-star"></i> 2025년 전국 동아리 대회 금상 수상</div>
-                <div class="marquee-item highlight"><i class="fas fa-trophy"></i> 역대 최다 회원 수 기록 갱신</div>
-                <div class="marquee-item"><i class="fas fa-code"></i> 새로운 프로젝트 'CyberCore' 개발 중</div>
-                <div class="marquee-item highlight"><i class="fas fa-users"></i> 2025년 신입회원 모집 중</div>
-                <div class="marquee-item"><i class="fas fa-globe"></i> 글로벌 동아리 연합 프로그램 진행</div>
-                <div class="marquee-item highlight"><i class="fas fa-microchip"></i> AI 개발팀 최신 기술 도입</div>
-                <div class="marquee-item"><i class="fas fa-rocket"></i> 해커톤 대회 참가팀 모집</div>
+    <!-- 로그인 모달 -->
+<div class="login-modal" id="loginModal">
+    <div class="login-form">
+        <button class="close-login" id="closeLogin">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2><i class="fas fa-lock"></i> 관리자 로그인</h2>
+        <form id="adminLoginForm">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> 사용자 이름</label>
+                <input type="text" id="username" placeholder="관리자 아이디">
             </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-key"></i> 비밀번호</label>
+                <input type="password" id="password" placeholder="비밀번호">
+            </div>
+            <button type="submit"><i class="fas fa-sign-in-alt"></i> 로그인</button>
+        </form>
+    </div>
+</div>
+    <div class="container">
+        <!-- Hello World 섹션 추가 -->
+        <div class="hello-world-container">
+            <div class="hello-world">Hello World!</div>
+            <div class="welcome-text">Hello world 동아리에 오신것을 환영합니다.</div>
         </div>
+     <!-- 전광판 -->
+<div class="marquee-container" style="width: 100%; margin: 20px 0 40px; border-left: 1px solid var(--neon-blue); border-right: 1px solid var(--neon-blue);">
+    <div class="marquee">
+        <div class="marquee-item"><i class="fas fa-star"></i> 2025년 전국 동아리 대회 금상 수상</div>
+        <div class="marquee-item highlight"><i class="fas fa-trophy"></i> 역대 최다 회원 수 기록 갱신</div>
+        <div class="marquee-item"><i class="fas fa-code"></i> 새로운 프로젝트 'CyberCore' 개발 중</div>
+        <div class="marquee-item highlight"><i class="fas fa-users"></i> 2025년 신입회원 모집 중</div>
+        <div class="marquee-item"><i class="fas fa-globe"></i> 글로벌 동아리 연합 프로그램 진행</div>
+        <div class="marquee-item highlight"><i class="fas fa-microchip"></i> AI 개발팀 최신 기술 도입</div>
+        <div class="marquee-item"><i class="fas fa-rocket"></i> 해커톤 대회 참가팀 모집</div>
+        
+        <!-- 반복을 위해 같은 내용 한 번 더 추가 -->
+        <div class="marquee-item"><i class="fas fa-star"></i> 2025년 전국 동아리 대회 금상 수상</div>
+        <div class="marquee-item highlight"><i class="fas fa-trophy"></i> 역대 최다 회원 수 기록 갱신</div>
+        <div class="marquee-item"><i class="fas fa-code"></i> 새로운 프로젝트 'CyberCore' 개발 중</div>
+        <div class="marquee-item highlight"><i class="fas fa-users"></i> 2025년 신입회원 모집 중</div>
+        <div class="marquee-item"><i class="fas fa-globe"></i> 글로벌 동아리 연합 프로그램 진행</div>
+        <div class="marquee-item highlight"><i class="fas fa-microchip"></i> AI 개발팀 최신 기술 도입</div>
+        <div class="marquee-item"><i class="fas fa-rocket"></i> 해커톤 대회 참가팀 모집</div>
+    </div>
+</div>
         
         <div class="tabs">
             <button class="tab-btn active" data-tab="about">
@@ -596,16 +780,9 @@
             
             <div class="profile-card">
                 <div class="profile-header">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="프로필 이미지" class="profile-img">
                     <div class="profile-info">
                         <h3>김동아 <span class="badge badge-primary">2025</span></h3>
                         <p>소프트웨어 개발부 부장 | 코드명: NEO</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="profile-img-1"><i class="fas fa-image"></i> 프로필 이미지 변경</label>
-                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
-                        <input type="file" id="profile-img-1" accept="image/*">
                     </div>
                 </div>
                 <div class="form-group">
@@ -629,16 +806,9 @@
             
             <div class="profile-card">
                 <div class="profile-header">
-                    <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="프로필 이미지" class="profile-img">
                     <div class="profile-info">
                         <h3>이희망 <span class="badge badge-primary">2024</span></h3>
                         <p>하드웨어 개발부 부장 | 코드명: MATRIX</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="profile-img-2"><i class="fas fa-image"></i> 프로필 이미지 변경</label>
-                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
-                        <input type="file" id="profile-img-2" accept="image/*">
                     </div>
                 </div>
                 <div class="form-group">
@@ -662,16 +832,9 @@
             
             <div class="profile-card">
                 <div class="profile-header">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="프로필 이미지" class="profile-img">
                     <div class="profile-info">
                         <h3>박꿈나무 <span class="badge badge-primary">2023</span></h3>
                         <p>기획디자인부 부장 | 코드명: CYPHER</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="profile-img-3"><i class="fas fa-image"></i> 프로필 이미지 변경</label>
-                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
-                        <input type="file" id="profile-img-3" accept="image/*">
                     </div>
                 </div>
                 <div class="form-group">
@@ -728,93 +891,196 @@
             <p>© 2077 CyberClub History System. All rights reserved. | Neo-Seoul Network</p>
         </footer>
     </div>
-
     <script>
-        // 탭 전환 기능
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                // 모든 탭 비활성화
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // 현재 탭 활성화
-                button.classList.add('active');
-                const tabId = button.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
+        
+document.addEventListener('DOMContentLoaded', function() {
+    // 로그인 관련 요소들
+    const loginBtn = document.getElementById('loginBtn');
+    const loginModal = document.getElementById('loginModal');
+    const closeLogin = document.getElementById('closeLogin');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const loginContainer = document.getElementById('loginContainer');
+    
+    // 로그인 상태 확인 (실제 구현에서는 서버 세션 등을 확인해야 함)
+    let isLoggedIn = false;
+    
+    // 로그인 버튼 표시 (처음에는 숨김 상태)
+    loginContainer.style.display = 'block';
+    
+    // 로그인 버튼 클릭 시 모달 열기
+    loginBtn.addEventListener('click', function() {
+        loginModal.style.display = 'flex';
+    });
+    
+    // 로그인 모달 닫기
+    closeLogin.addEventListener('click', function() {
+        loginModal.style.display = 'none';
+    });
+    
+    // 모달 외부 클릭 시 닫기
+    loginModal.addEventListener('click', function(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = 'none';
+        }
+    });
+    
+    // 로그인 폼 제출 처리
+    adminLoginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // 간단한 인증 (실제 구현에서는 서버와의 통신이 필요)
+        if (username === 'admin' && password === 'password') {
+            isLoggedIn = true;
+            alert('로그인 성공! 관리자 모드가 활성화되었습니다.');
+            loginModal.style.display = 'none';
+            loginBtn.innerHTML = '<i class="fas fa-user-cog"></i> 관리자 모드';
+            
+            // 실제 구현에서는 여기에 관리자 기능 활성화 코드 추가
+            enableAdminFeatures();
+        } else {
+            alert('로그인 실패! 아이디 또는 비밀번호를 확인해주세요.');
+        }
+    });
+    
+    // 관리자 기능 활성화 함수
+    function enableAdminFeatures() {
+        // 모든 저장 버튼에 클릭 이벤트 추가
+        const saveButtons = document.querySelectorAll('button[type="submit"]');
+        saveButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    alert('관리자만 저장할 수 있습니다. 먼저 로그인해주세요.');
+                    loginModal.style.display = 'flex';
+                } else {
+                    alert('저장되었습니다!');
+                    // 실제 구현에서는 여기에 서버로 데이터 전송 코드 추가
+                }
             });
         });
         
-        // 폼 제출 처리 (실제 구현에서는 서버와 연동해야 함)
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', (e) => {
+        // 파일 업로드 필드에도 동일하게 적용
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach(input => {
+            input.addEventListener('click', function(e) {
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    alert('관리자만 파일을 업로드할 수 있습니다. 먼저 로그인해주세요.');
+                    loginModal.style.display = 'flex';
+                }
+            });
+        });
+    }
+    
+    // 초기에는 관리자 기능 비활성화 상태
+    enableAdminFeatures();
+    
+    // 빛나는 점 생성 (배경 효과)
+    function createGlowingDots() {
+        const container = document.getElementById('glowing-dots');
+        const colors = ['#00f3ff', '#ff00ff', '#bd00ff', '#39ff14'];
+        
+        for (let i = 0; i < 30; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            
+            // 랜덤 위치
+            dot.style.left = Math.random() * 100 + 'vw';
+            dot.style.top = Math.random() * 100 + 'vh';
+            
+            // 랜덤 색상
+            dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+            dot.style.boxShadow = `0 0 10px ${dot.style.background}, 0 0 20px ${dot.style.background}`;
+            
+            // 랜덤 애니메이션 지연
+            dot.style.animationDelay = Math.random() * 15 + 's';
+            
+            container.appendChild(dot);
+        }
+    }
+    
+    createGlowingDots();
+});
+</script>
+<script>
+    // 로그인 기능 연결
+    document.addEventListener('DOMContentLoaded', function() {
+        // 로그인 관련 요소들
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        
+        // 로그인 버튼이 존재하는지 확인
+        if (loginBtn && loginModal) {
+            // 로그인 버튼 클릭 시 모달 열기
+            loginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
+            });
+            
+            // 모달 닫기 버튼
+            closeLogin.addEventListener('click', function() {
+                loginModal.style.display = 'none';
+            });
+            
+            // 모달 외부 클릭 시 닫기
+            loginModal.addEventListener('click', function(e) {
+                if (e.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            });
+            
+            // 로그인 폼 제출 처리
+            adminLoginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // 네온 효과 추가
-                const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> 저장 완료!';
-                btn.style.background = 'linear-gradient(90deg, var(--neon-green), var(--neon-blue))';
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
                 
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.style.background = 'linear-gradient(90deg, var(--neon-blue), var(--neon-purple))';
-                }, 2000);
-            });
-        });
-        
-        // 파일 업로드 미리보기 기능 (이미지)
-        document.querySelectorAll('input[type="file"][accept="image/*"]').forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.files && this.files[0]) {
-                    const reader = new FileReader();
-                    const img = this.closest('.profile-card').querySelector('.profile-img');
-                    const wrapper = this.closest('.file-upload-wrapper');
+                // 간단한 인증 (실제 구현에서는 서버와의 통신이 필요)
+                if (username === 'admin' && password === 'password') {
+                    alert('로그인 성공! 관리자 모드가 활성화되었습니다.');
+                    loginModal.style.display = 'none';
+                    loginBtn.innerHTML = '<i class="fas fa-user-cog"></i> 관리자 모드';
                     
-                    reader.onload = function(e) {
-                        img.src = e.target.result;
-                        wrapper.setAttribute('data-text', this.files[0].name);
-                    }.bind(this);
-                    
-                    reader.readAsDataURL(this.files[0]);
-                }
-            });
-        });
-        
-        // 파일 업로드 시 파일명 표시
-        document.querySelectorAll('input[type="file"]').forEach(input => {
-            input.addEventListener('change', function() {
-                const wrapper = this.closest('.file-upload-wrapper');
-                if (this.files && this.files[0]) {
-                    wrapper.setAttribute('data-text', this.files[0].name);
+                    // 실제 구현에서는 여기에 관리자 기능 활성화 코드 추가
                 } else {
-                    wrapper.setAttribute('data-text', '선택된 파일이 없습니다');
+                    alert('로그인 실패! 아이디 또는 비밀번호를 확인해주세요.');
                 }
             });
-        });
+        } else {
+            console.error('로그인 요소를 찾을 수 없습니다.');
+        }
         
-        // 빛나는 점 생성
+        // 빛나는 점 생성 (배경 효과)
         function createGlowingDots() {
             const container = document.getElementById('glowing-dots');
-            const colors = ['00f3ff', 'ff00ff', 'bd00ff', '39ff14'];
+            const colors = ['#00f3ff', '#ff00ff', '#bd00ff', '#39ff14'];
             
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'dot';
-                dot.style.left = `${Math.random() * 100}%`;
-                dot.style.top = `${Math.random() * 100}%`;
-                dot.style.background = `#${colors[Math.floor(Math.random() * colors.length)]}`;
-                dot.style.boxShadow = `0 0 10px #${colors[Math.floor(Math.random() * colors.length)]}, 0 0 20px #${colors[Math.floor(Math.random() * colors.length)]}`;
-                dot.style.animationDuration = `${15 + Math.random() * 20}s`;
-                dot.style.animationDelay = `-${Math.random() * 20}s`;
+                
+                // 랜덤 위치
+                dot.style.left = Math.random() * 100 + 'vw';
+                dot.style.top = Math.random() * 100 + 'vh';
+                
+                // 랜덤 색상
+                dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+                dot.style.boxShadow = `0 0 10px ${dot.style.background}, 0 0 20px ${dot.style.background}`;
+                
+                // 랜덤 애니메이션 지연
+                dot.style.animationDelay = Math.random() * 15 + 's';
+                
                 container.appendChild(dot);
             }
         }
         
         createGlowingDots();
-    </script>
+    });
+</script>
 </body>
 </html>
