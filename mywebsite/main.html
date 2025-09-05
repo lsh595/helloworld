@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberClub | 동아리 역사 관리 시스템</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #bd00ff;
+            --neon-green: #39ff14;
+            --dark-bg: #0a0a16;
+            --darker-bg: #050510;
+            --panel-bg: rgba(16, 16, 40, 0.8);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background: var(--darker-bg);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(189, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 20%);
+            padding-bottom: 40px;
+        }
+        
+        /* 전광판 스타일 */
+        .marquee-container {
+            background: linear-gradient(90deg, #0a0a16 0%, #1a1a3a 50%, #0a0a16 100%);
+            border: 1px solid var(--neon-blue);
+            border-left: none;
+            border-right: none;
+            padding: 12px 0;
+            margin: 20px 0 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+        
+        .marquee {
+            display: flex;
+            animation: marquee-scroll 40s linear infinite;
+            white-space: nowrap;
+        }
+        
+        .marquee-item {
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+            font-weight: bold;
+        }
+        
+        .marquee-item i {
+            margin-right: 10px;
+            color: var(--neon-pink);
+        }
+        
+        .marquee-item.highlight {
+            color: var(--neon-pink);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: var(--panel-bg);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            animation: header-glow 3s infinite;
+        }
+        
+        @keyframes header-glow {
+            0% { box-shadow: 0 0 10px var(--neon-blue); }
+            50% { box-shadow: 0 0 20px var(--neon-pink); }
+            100% { box-shadow: 0 0 10px var(--neon-blue); }
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 0 15px var(--neon-blue);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--neon-green);
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: relative;
+        }
+        
+        .tab-btn {
+            padding: 15px 30px;
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-purple);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+            box-shadow: 0 0 10px rgba(189, 0, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tab-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px var(--neon-pink);
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+        
+        .tab-btn.active {
+            background: rgba(189, 0, 255, 0.2);
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .tab-content {
+            display: none;
+            background: var(--panel-bg);
+            padding: 35px;
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 243, 255, 0.05), rgba(189, 0, 255, 0.05));
+            pointer-events: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content h2 {
+            color: var(--neon-blue);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+        
+        input[type="text"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(10, 10, 22, 0.7);
+            border: 1px solid var(--neon-blue);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+            line-height: 1.6;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        button[type="submit"] {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(189, 0, 255, 0.6);
+        }
+        
+        .profile-card {
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            background: var(--panel-bg);
+            box-shadow: 0 0 15px rgba(189, 0, 255, 0.2);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink), var(--neon-purple));
+            animation: border-glow 3s infinite;
+        }
+        
+        @keyframes border-glow {
+            0% { box-shadow: 0 0 10px var(--neon-blue); }
+            50% { box-shadow: 0 0 15px var(--neon-pink); }
+            100% { box-shadow: 0 0 10px var(--neon-blue); }
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 25px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+        
+        .profile-info h3 {
+            margin-bottom: 5px;
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .profile-info p {
+            color: var(--neon-green);
+            font-weight: 500;
+        }
+        
+        .achievement-list {
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        
+        .achievement-list li {
+            padding: 15px;
+            background: rgba(57, 255, 20, 0.1);
+            margin-bottom: 12px;
+            border-radius: 5px;
+            border-left: 3px solid var(--neon-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+            color: var(--neon-green);
+        }
+        
+        .achievement-list li:hover {
+            transform: translateX(5px);
+            background: rgba(57, 255, 20, 0.2);
+        }
+        
+        .file-upload-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .file-upload-wrapper:after {
+            content: attr(data-text);
+            font-size: 1rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(10, 10, 22, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--neon-blue);
+            width: 100%;
+            pointer-events: none;
+            z-index: 1;
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+        }
+        
+        .file-upload-wrapper:before {
+            content: '파일 선택';
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: inline-block;
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            font-weight: 600;
+            z-index: 2;
+            padding: 15px 20px;
+            border-radius: 0 5px 5px 0;
+            pointer-events: none;
+        }
+        
+        .file-upload-wrapper input {
+            opacity: 0;
+            position: relative;
+            z-index: 3;
+            padding: 15px;
+            cursor: pointer;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 25px;
+            color: var(--neon-blue);
+            font-size: 1rem;
+            background: var(--panel-bg);
+            border-radius: 10px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-img {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            header {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .marquee {
+                animation: marquee-scroll 20s linear infinite;
+            }
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge-primary {
+            background-color: var(--neon-blue);
+            color: var(--dark-bg);
+        }
+        
+        /* 추가적인 네온 효과 */
+        .neon-text {
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glowing-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="glowing-dots" id="glowing-dots"></div>
+    
+    <div class="container">
+        <header>
+            <h1>CyberClub History</h1>
+            <p class="header-subtitle">동아리 역사 관리 시스템 | Neo-Seoul 2077</p>
+        </header>
+        
+        <!-- 전광판 -->
+        <div class="marquee-container">
+            <div class="marquee">
+                <div class="marquee-item"><i class="fas fa-star"></i> 2025년 전국 동아리 대회 금상 수상</div>
+                <div class="marquee-item highlight"><i class="fas fa-trophy"></i> 역대 최다 회원 수 기록 갱신</div>
+                <div class="marquee-item"><i class="fas fa-code"></i> 새로운 프로젝트 'CyberCore' 개발 중</div>
+                <div class="marquee-item highlight"><i class="fas fa-users"></i> 2025년 신입회원 모집 중</div>
+                <div class="marquee-item"><i class="fas fa-globe"></i> 글로벌 동아리 연합 프로그램 진행</div>
+                <div class="marquee-item highlight"><i class="fas fa-microchip"></i> AI 개발팀 최신 기술 도입</div>
+                <div class="marquee-item"><i class="fas fa-rocket"></i> 해커톤 대회 참가팀 모집</div>
+                
+                <!-- 반복을 위해 같은 내용 한 번 더 추가 -->
+                <div class="marquee-item"><i class="fas fa-star"></i> 2025년 전국 동아리 대회 금상 수상</div>
+                <div class="marquee-item highlight"><i class="fas fa-trophy"></i> 역대 최다 회원 수 기록 갱신</div>
+                <div class="marquee-item"><i class="fas fa-code"></i> 새로운 프로젝트 'CyberCore' 개발 중</div>
+                <div class="marquee-item highlight"><i class="fas fa-users"></i> 2025년 신입회원 모집 중</div>
+                <div class="marquee-item"><i class="fas fa-globe"></i> 글로벌 동아리 연합 프로그램 진행</div>
+                <div class="marquee-item highlight"><i class="fas fa-microchip"></i> AI 개발팀 최신 기술 도입</div>
+                <div class="marquee-item"><i class="fas fa-rocket"></i> 해커톤 대회 참가팀 모집</div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="about">
+                <i class="fas fa-info-circle"></i> 설립 정보
+            </button>
+            <button class="tab-btn" data-tab="vision">
+                <i class="fas fa-eye"></i> 비전
+            </button>
+            <button class="tab-btn" data-tab="leaders">
+                <i class="fas fa-users"></i> 역대 부장단
+            </button>
+            <button class="tab-btn" data-tab="achievements">
+                <i class="fas fa-trophy"></i> 업적 관리
+            </button>
+        </div>
+        
+        <div id="about" class="tab-content active">
+            <h2><i class="fas fa-info-circle"></i> 동아리 설립 정보</h2>
+            <form id="about-form">
+                <div class="form-group">
+                    <label for="founders"><i class="fas fa-user-plus"></i> 설립자 정보</label>
+                    <textarea id="founders" placeholder="동아리 설립에 관한 상세 정보를 입력하세요 (누가, 언제, 어디서, 왜, 어떻게 설립했는가)"></textarea>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> 저장하기</button>
+            </form>
+        </div>
+        
+        <div id="vision" class="tab-content">
+            <h2><i class="fas fa-eye"></i> 동아리 비전</h2>
+            <form id="vision-form">
+                <div class="form-group">
+                    <label for="vision-text"><i class="fas fa-bullseye"></i> 동아리 목적과 비전</label>
+                    <textarea id="vision-text" placeholder="동아리의 목적과 비전에 대해 입력하세요"></textarea>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> 저장하기</button>
+            </form>
+        </div>
+        
+        <div id="leaders" class="tab-content">
+            <h2><i class="fas fa-users"></i> 역대 부장단 관리 (2023~2025)</h2>
+            
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="프로필 이미지" class="profile-img">
+                    <div class="profile-info">
+                        <h3>김동아 <span class="badge badge-primary">2025</span></h3>
+                        <p>소프트웨어 개발부 부장 | 코드명: NEO</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profile-img-1"><i class="fas fa-image"></i> 프로필 이미지 변경</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="profile-img-1" accept="image/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message-1"><i class="fas fa-comment"></i> 부장 메시지</label>
+                    <textarea id="message-1" placeholder="부장의 메시지를 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="audio-1"><i class="fas fa-music"></i> 음성 메시지</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="audio-1" accept="audio/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="video-1"><i class="fas fa-video"></i> 영상 메시지</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="video-1" accept="video/*">
+                    </div>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> 저장하기</button>
+            </div>
+            
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="프로필 이미지" class="profile-img">
+                    <div class="profile-info">
+                        <h3>이희망 <span class="badge badge-primary">2024</span></h3>
+                        <p>하드웨어 개발부 부장 | 코드명: MATRIX</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profile-img-2"><i class="fas fa-image"></i> 프로필 이미지 변경</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="profile-img-2" accept="image/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message-2"><i class="fas fa-comment"></i> 부장 메시지</label>
+                    <textarea id="message-2" placeholder="부장의 메시지를 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="audio-2"><i class="fas fa-music"></i> 음성 메시지</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="audio-2" accept="audio/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="video-2"><i class="fas fa-video"></i> 영상 메시지</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="video-2" accept="video/*">
+                    </div>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> 저장하기</button>
+            </div>
+            
+            <div class="profile-card">
+                <div class="profile-header">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" alt="프로필 이미지" class="profile-img">
+                    <div class="profile-info">
+                        <h3>박꿈나무 <span class="badge badge-primary">2023</span></h3>
+                        <p>기획디자인부 부장 | 코드명: CYPHER</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profile-img-3"><i class="fas fa-image"></i> 프로필 이미지 변경</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="profile-img-3" accept="image/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message-3"><i class="fas fa-comment"></i> 부장 메시지</label>
+                    <textarea id="message-3" placeholder="부장의 메시지를 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="audio-3"><i class="fas fa-music"></i> 음성 메시지</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="audio-3" accept="audio/*">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="video-3"><i class="fas fa-video"></i> 영상 메시지</label>
+                    <div class="file-upload-wrapper" data-text="선택된 파일이 없습니다">
+                        <input type="file" id="video-3" accept="video/*">
+                    </div>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> 저장하기</button>
+            </div>
+        </div>
+        
+        <div id="achievements" class="tab-content">
+            <h2><i class="fas fa-trophy"></i> 역대 부장단 업적 관리</h2>
+            <form id="achievements-form">
+                <div class="form-group">
+                    <label for="achievements-data"><i class="fas fa-database"></i> 업적 데이터 (JSON 형식)</label>
+                    <textarea id="achievements-data" placeholder='{
+  "leaders": [
+    {
+      "name": "김동아",
+      "year": "2025",
+      "achievements": [
+        "2025년 전국 동아리 대회 금상 수상",
+        "동아리 회원 수 50% 증가"
+      ]
+    }
+  ]
+}'></textarea>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> 저장하기</button>
+            </form>
+            
+            <h3><i class="fas fa-list"></i> 업적 미리보기</h3>
+            <ul class="achievement-list">
+                <li><i class="fas fa-award"></i> 2025년 전국 동아리 대회 금상 수상 (김동아, 2025)</li>
+                <li><i class="fas fa-chart-line"></i> 동아리 회원 수 50% 증가 (김동아, 2025)</li>
+                <li><i class="fas fa-medal"></i> 2024년 지역 동아리 경진대회 최우수상 (이희망, 2024)</li>
+                <li><i class="fas fa-globe"></i> 첫 해외 동아리 교류 프로그램 성사 (박꿈나무, 2023)</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>© 2077 CyberClub History System. All rights reserved. | Neo-Seoul Network</p>
+        </footer>
+    </div>
+
+    <script>
+        // 탭 전환 기능
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // 모든 탭 비활성화
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // 현재 탭 활성화
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // 폼 제출 처리 (실제 구현에서는 서버와 연동해야 함)
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // 네온 효과 추가
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> 저장 완료!';
+                btn.style.background = 'linear-gradient(90deg, var(--neon-green), var(--neon-blue))';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = 'linear-gradient(90deg, var(--neon-blue), var(--neon-purple))';
+                }, 2000);
+            });
+        });
+        
+        // 파일 업로드 미리보기 기능 (이미지)
+        document.querySelectorAll('input[type="file"][accept="image/*"]').forEach(input => {
+            input.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    const img = this.closest('.profile-card').querySelector('.profile-img');
+                    const wrapper = this.closest('.file-upload-wrapper');
+                    
+                    reader.onload = function(e) {
+                        img.src = e.target.result;
+                        wrapper.setAttribute('data-text', this.files[0].name);
+                    }.bind(this);
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+        
+        // 파일 업로드 시 파일명 표시
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const wrapper = this.closest('.file-upload-wrapper');
+                if (this.files && this.files[0]) {
+                    wrapper.setAttribute('data-text', this.files[0].name);
+                } else {
+                    wrapper.setAttribute('data-text', '선택된 파일이 없습니다');
+                }
+            });
+        });
+        
+        // 빛나는 점 생성
+        function createGlowingDots() {
+            const container = document.getElementById('glowing-dots');
+            const colors = ['00f3ff', 'ff00ff', 'bd00ff', '39ff14'];
+            
+            for (let i = 0; i < 20; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.top = `${Math.random() * 100}%`;
+                dot.style.background = `#${colors[Math.floor(Math.random() * colors.length)]}`;
+                dot.style.boxShadow = `0 0 10px #${colors[Math.floor(Math.random() * colors.length)]}, 0 0 20px #${colors[Math.floor(Math.random() * colors.length)]}`;
+                dot.style.animationDuration = `${15 + Math.random() * 20}s`;
+                dot.style.animationDelay = `-${Math.random() * 20}s`;
+                container.appendChild(dot);
+            }
+        }
+        
+        createGlowingDots();
+    </script>
+</body>
+</html>
