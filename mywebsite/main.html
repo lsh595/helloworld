@@ -686,6 +686,47 @@
             90% { opacity: 1; }
             100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
+        /* 해커 모드 스타일 */
+.hacker-mode {
+  background-color: #000 !important;
+  background-image: none !important; /* 그라데이션 덮어쓰기 */
+  color: #00ff00 !important;
+  font-family: "Courier New", monospace !important;
+  text-shadow: 0 0 10px #00ff00;
+  overflow: hidden;
+}
+
+.hacker-console {
+  padding: 20px;
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 0, 0.05),
+    rgba(0, 255, 0, 0.05) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.9; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
     </style>
 </head><body>
     <div class="cyber-grid"></div>
@@ -740,16 +781,16 @@
         
         <div class="tabs">
             <button class="tab-btn active" data-tab="about">
-                <i class="fas fa-info-circle"></i> 설립 정보
+                <i class="fas fa-info-circle"></i> 역사
             </button>
             <button class="tab-btn" data-tab="vision">
-                <i class="fas fa-eye"></i> 비전
+                <i class="fas fa-eye"></i> 동아리 활동
             </button>
             <button class="tab-btn" data-tab="leaders">
-                <i class="fas fa-users"></i> 역대 부장단
+                <i class="fas fa-users"></i> 라온제나 작품
             </button>
             <button class="tab-btn" data-tab="achievements">
-                <i class="fas fa-trophy"></i> 업적 관리
+                <i class="fas fa-trophy"></i> 해커톤 캠프
             </button>
         </div>
         
@@ -888,7 +929,7 @@
         </div>
         
         <footer>
-            <p>© 2077 CyberClub History System. All rights reserved. | Neo-Seoul Network</p>
+            <p>© 2025 호치민시한국국제학교.Hello world!</p>
         </footer>
     </div>
     <script>
@@ -1081,6 +1122,263 @@ document.addEventListener('DOMContentLoaded', function() {
         
         createGlowingDots();
     });
+</script>
+<script>
+  let secretCode = "IDDQD";  // 원하는 코드
+  let inputBuffer = "";      // 입력 누적 버퍼
+
+  document.addEventListener("keydown", function(e) {
+    inputBuffer += e.key.toUpperCase(); // 키 입력 저장
+    if (inputBuffer.length > secretCode.length) {
+      inputBuffer = inputBuffer.slice(-secretCode.length); 
+    }
+
+    // 코드 일치 시 이벤트 발동
+    if (inputBuffer === secretCode) {
+      activateEasterEgg();
+      inputBuffer = ""; // 초기화
+    }
+  });
+
+  function activateEasterEgg() {
+    // 여기 원하는 기능 넣으면 됨
+    alert("이스터애그 발견!");
+    
+    // 숨겨진 페이지로 이동
+    // window.location.href = "/secret.html"; 
+    
+    // 화면 효과 예시
+    document.body.style.background = "radial-gradient(circle, #ff00ff, #000)";
+    document.body.style.color = "#0f0";
+  }
+</script>
+<script>
+(() => {
+  // ===== 로그인/점 효과: 존재 체크로 에러 방지 =====
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginBtn = document.getElementById('loginBtn');
+    const loginModal = document.getElementById('loginModal');
+    const closeLogin = document.getElementById('closeLogin');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const loginContainer = document.getElementById('loginContainer');
+
+    if (loginContainer) loginContainer.style.display = 'block';
+
+    if (loginBtn && loginModal && closeLogin && adminLoginForm) {
+      loginBtn.addEventListener('click', () => loginModal.style.display = 'flex');
+      closeLogin.addEventListener('click', () => loginModal.style.display = 'none');
+      loginModal.addEventListener('click', (e) => { if (e.target === loginModal) loginModal.style.display = 'none'; });
+      adminLoginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        if (u === 'admin' && p === 'password') {
+          alert('로그인 성공! 관리자 모드가 활성화되었습니다.');
+          loginModal.style.display = 'none';
+          loginBtn.innerHTML = '<i class="fas fa-user-cog"></i> 관리자 모드';
+        } else {
+          alert('로그인 실패! 아이디 또는 비밀번호를 확인해주세요.');
+        }
+      });
+    }
+
+    // 배경 점(중복 방지)
+    const dots = document.getElementById('glowing-dots');
+    if (dots && !dots.dataset.init) {
+      dots.dataset.init = '1';
+      const colors = ['#00f3ff','#ff00ff','#bd00ff','#39ff14'];
+      for (let i = 0; i < 30; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot';
+        d.style.left = Math.random() * 100 + 'vw';
+        d.style.top = Math.random() * 100 + 'vh';
+        const c = colors[(Math.random()*colors.length)|0];
+        d.style.background = c;
+        d.style.boxShadow = `0 0 10px ${c}, 0 0 20px ${c}`;
+        d.style.animationDelay = Math.random() * 15 + 's';
+        dots.appendChild(d);
+      }
+    }
+  });
+  // ===== 이스터에그: IDDQD → 해커 모드 =====
+  const SECRET = 'IDDQD';
+  let buffer = '';
+  let composing = false;
+  let hackerModeActivated = false;
+
+  // 한글 IME 입력 중에는 무시
+  document.addEventListener('compositionstart', () => composing = true);
+  document.addEventListener('compositionend',   () => composing = false);
+
+  document.addEventListener('keydown', (e) => {
+    if (composing) return;
+    if (e.key.length !== 1) return; // Shift, Alt 등 무시
+    buffer += e.key.toUpperCase();
+    if (buffer.length > SECRET.length) buffer = buffer.slice(-SECRET.length);
+
+    if (buffer === SECRET && !hackerModeActivated) {
+      activateHackerMode();
+      buffer = '';
+    }
+
+    // ESC → 원래 페이지로 복귀
+    if (e.key === "Escape" && hackerModeActivated) {
+      restoreOriginalPage();
+    }
+  });
+
+  function activateHackerMode() {
+    hackerModeActivated = true;
+
+    // 원래 콘텐츠 숨기기
+    let original = document.getElementById("original-page");
+    if (!original) {
+      const wrap = document.createElement("div");
+      wrap.id = "original-page";
+      while (document.body.firstChild) {
+        wrap.appendChild(document.body.firstChild);
+      }
+      document.body.appendChild(wrap);
+    }
+    document.getElementById("original-page").style.display = "none";
+
+    // 해커 모드 화면 추가
+    const hackerDiv = document.createElement("div");
+    hackerDiv.id = "hacker-mode";
+    hackerDiv.innerHTML = `
+      <div class="hacker-console" id="console">
+ACCESS GRANTED...<span class="cursor">_</span>
+Initializing GOD MODE...
+      </div>
+    `;
+    document.body.appendChild(hackerDiv);
+
+    // CSS 강제 적용
+    const style = document.createElement('style');
+    style.id = "hacker-style";
+    style.textContent = `
+      body {
+        background: #000 !important;
+        margin: 20px;
+      }
+      .hacker-console {
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        white-space: pre-wrap;
+      }
+      .cursor {
+        display: inline-block;
+        margin-left: 4px;
+        animation: blink 1s step-start infinite;
+      }
+      @keyframes blink {
+        50% { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    const logs = [
+      "[*] Connecting to CyberCore mainframe...",
+      "[*] Bypassing security protocols...",
+      "[*] Injecting payload...",
+      "[*] System override successful!",
+      "[+] Welcome, Administrator."
+    ];
+
+    const el = document.getElementById('console');
+    let i = 0;
+    const t = setInterval(() => {
+      if (i < logs.length) el.textContent += "\n" + logs[i++];
+      else clearInterval(t);
+    }, 800);
+  }
+
+  function restoreOriginalPage() {
+    hackerModeActivated = false;
+    document.getElementById("hacker-mode").remove();
+    document.getElementById("hacker-style").remove();
+    document.getElementById("original-page").style.display = "block";
+  }
+
+})(); // ← IIFE 닫는 부분, 꼭 필요함
+</script>
+<!-- body 끝나기 직전 -->
+<script>
+  const SECRET = "IDDQD";
+  let buffer = "";
+  let composing = false;
+  let hackerModeActivated = false;
+
+  document.addEventListener("compositionstart", () => (composing = true));
+  document.addEventListener("compositionend", () => (composing = false));
+
+  document.addEventListener("keydown", (e) => {
+    if (composing) return;
+    if (e.key.length !== 1 && e.key !== "Escape") return;
+
+    if (e.key === "Escape" && hackerModeActivated) {
+      restoreOriginalPage();
+      return;
+    }
+
+    buffer += e.key.toUpperCase();
+    if (buffer.length > SECRET.length) buffer = buffer.slice(-SECRET.length);
+    if (buffer === SECRET) {
+      activateHackerMode();
+      buffer = "";
+    }
+  });
+
+  function activateHackerMode() {
+    hackerModeActivated = true;
+
+    let original = document.getElementById("original-page");
+    if (!original) {
+      const wrap = document.createElement("div");
+      wrap.id = "original-page";
+      while (document.body.firstChild) {
+        wrap.appendChild(document.body.firstChild);
+      }
+      document.body.appendChild(wrap);
+    }
+    document.getElementById("original-page").style.display = "none";
+
+    const hackerDiv = document.createElement("div");
+    hackerDiv.id = "hacker-mode";
+    hackerDiv.classList.add("hacker-mode");
+    hackerDiv.innerHTML = `
+      <div class="scanline"></div>
+      <div class="hacker-console" id="console">
+        ACCESS GRANTED..._
+        \nInitializing GOD MODE...
+      </div>
+    `;
+    document.body.appendChild(hackerDiv);
+
+    const logs = [
+      "[*] Connecting to CyberCore mainframe...",
+      "[*] Bypassing security protocols...",
+      "[*] Injecting payload...",
+      "[*] System override successful!",
+      "[+] Welcome, Administrator."
+    ];
+    const el = document.getElementById("console");
+    let i = 0;
+    const t = setInterval(() => {
+      if (i < logs.length) el.textContent += "\n" + logs[i++];
+      else clearInterval(t);
+    }, 800);
+  }
+
+  function restoreOriginalPage() {
+    hackerModeActivated = false;
+
+    const hackerDiv = document.getElementById("hacker-mode");
+    if (hackerDiv) hackerDiv.remove();
+
+    const original = document.getElementById("original-page");
+    if (original) original.style.display = "block";
+  }
 </script>
 </body>
 </html>
